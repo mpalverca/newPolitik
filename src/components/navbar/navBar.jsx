@@ -40,7 +40,7 @@ export default function ResponsiveNavBar() {
   const navegate = useNavigate();
   // Verificar localStorage al cargar el componente
   useEffect(() => {
-    const userData = localStorage.getItem("user");
+    const userData = localStorage.getItem("userNP");
 
     if (userData) {
       setUser(JSON.parse(userData));
@@ -94,26 +94,12 @@ export default function ResponsiveNavBar() {
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          {/* Logo - visible en todas las pantallas */}
-          {/* <IconButton
-            sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
-            edge="start"
-            color="inherit"
-          >
-            <img
-              src={logo1}
-              alt="Logo"
-              style={{ width: "30px", height: "30px" }}
-            />
-          </IconButton> */}
-
+       
           {/* Título - versión desktop */}
           <Typography
             variant="h4"
             noWrap
             component="a"
-            
-            href="/riesgosapp"
             sx={{
               mr: 1,
               display: { xs: "none", md: "flex" },

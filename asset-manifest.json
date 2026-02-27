@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/newPolitik/static/css/main.7d72cf6d.css",
-    "main.js": "/newPolitik/static/js/main.bf6d48c2.js",
+    "main.js": "/newPolitik/static/js/main.6f96c695.js",
     "static/js/453.d7266196.chunk.js": "/newPolitik/static/js/453.d7266196.chunk.js",
     "static/media/New_logo.jpg": "/newPolitik/static/media/New_logo.bd60813d782350e5ac0f.jpg",
     "static/media/logo.svg": "/newPolitik/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/newPolitik/index.html",
     "main.7d72cf6d.css.map": "/newPolitik/static/css/main.7d72cf6d.css.map",
-    "main.bf6d48c2.js.map": "/newPolitik/static/js/main.bf6d48c2.js.map",
+    "main.6f96c695.js.map": "/newPolitik/static/js/main.6f96c695.js.map",
     "453.d7266196.chunk.js.map": "/newPolitik/static/js/453.d7266196.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.7d72cf6d.css",
-    "static/js/main.bf6d48c2.js"
+    "static/js/main.6f96c695.js"
   ]
 }

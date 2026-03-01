@@ -8,7 +8,7 @@ export default function ProtectedRoute({ children }) {
   //client.auth.getUser();
   
   if (!user) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/inicio" replace />;
   }
 
   return children;

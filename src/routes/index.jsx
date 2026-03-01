@@ -9,7 +9,7 @@ export default function AppRouter() {
 
   // CAMBIO: useEffect debe estar importado
   useEffect(() => {
-    const userData = localStorage.getItem("user");
+    const userData = localStorage.getItem("userNP");
     if (userData) {
       setUser(JSON.parse(userData));
     }
@@ -28,8 +28,7 @@ export default function AppRouter() {
           }
         />
         <Route path="/inicio" element={<Home />} />
-
-        </Routes>
+      </Routes>
     </Router>
   );
 }

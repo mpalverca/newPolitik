@@ -81,8 +81,6 @@ export default function ResponsiveNavBar() {
       role: "admin",
     }; */
 
-    navegate("/riesgosapp/userauth");
-
     // localStorage.setItem('user', JSON.stringify(fakeUser));
     // setUser(fakeUser);
   };

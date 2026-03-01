@@ -169,13 +169,13 @@ export default function ResponsiveNavBar() {
               alignItems: "center",
             }}
           >
-            <IconButton sx={{ mr: 1 }} color="inherit">
+           {/*  <IconButton sx={{ mr: 1 }} color="inherit">
               <img
                 src={logo1}
                 alt="Logo"
                 style={{ width: "30px", height: "30px" }}
               />
-            </IconButton>
+            </IconButton> */}
             <Typography
               variant="h5"
               noWrap
@@ -293,13 +293,13 @@ export default function ResponsiveNavBar() {
                 onClick={handleLogin}
                 sx={{
                   backgroundColor: "white",
-                  color: "#FF5733",
+                  color: "#0a0a0a",
                   "&:hover": {
                     backgroundColor: "#f5f5f5",
                   },
                 }}
               >
-                REGISTRO DE USUARIO
+                Registrar
               </Button>
             )}
           </Box>

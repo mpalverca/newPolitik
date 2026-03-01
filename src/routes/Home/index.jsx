@@ -63,7 +63,7 @@ const Home = () => {
           item
           sx={{
             flex: 1,
-            height: "100%",
+            //height: "100%",
             position: "relative",
           }}
         >

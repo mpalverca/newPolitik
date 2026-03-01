@@ -24,26 +24,27 @@ import {
 } from "@mui/icons-material";
 import { DialogCenter } from "../../components/dialogs/dialog";
 
-
 export default function MapMark({ position, zoom, renderPolygons, ...props }) {
   const [menuAnchor, setMenuAnchor] = useState(null);
-  const [coordinates, setCoordinates] = useState(null);  
+  const [coordinates, setCoordinates] = useState(null);
+  const [type, setType] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
 
   const layersConfig = [
-  {
-    key: "need",
-    label: "Necesidad",
-    accion: (coords) => handleClickOpen(coords),
-  },
-  {
-    key: "propsp",
-    label: "Propuesta Política",
-    accion: (coords) => handleClickOpen(coords),
-  },
-];
-const handleClickOpen = (coordenate) => {
+    {
+      key: "need",
+      label: "Necesidad",
+      accion: (coords) => handleClickOpen(coords, "necesidad"),
+    },
+    {
+      key: "propsp",
+      label: "Propuesta Política",
+      accion: (coords) => handleClickOpen(coords, "propuesta"),
+    },
+  ];
+  const handleClickOpen = (coords, type) => {
     setOpenDialog(true);
+    setType(type);
 
     //setCoordinates(coordenate);
   };
@@ -86,6 +87,9 @@ const handleClickOpen = (coordenate) => {
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          /* url="/tiles/isometricos/{z}/{x}/{y}.png"
+        tileSize={256}
+        noWrap={true} */
         />
         <MapClickHandler onMapClick={handleMapClick} />
         {/* CORRECCIÓN: Llama a renderPolygons si es una función */}
@@ -181,9 +185,9 @@ const handleClickOpen = (coordenate) => {
         </Box>
       </Popover>
       <DialogCenter
-      title={"la necesidad"}
+        title={type}
         open={openDialog}
-     
+        
         onClose={() => setOpenDialog(false)}
       />
     </Box>

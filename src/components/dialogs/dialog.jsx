@@ -1,30 +1,37 @@
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from "@mui/material";
+import { useState } from "react";
+import { Dialog, DialogContent, DialogTitle } from "@mui/material";
+import NeedForm from "../../Pages/homeMap/need";
+import PublicarPropuesta from "../../Pages/homeMap/propuesta";
 
-export const DialogCenter = ({
- title,
-  open,
-  onClose,
-}) => {
-     const handleClose = () => {
+export const DialogCenter = ({ title, open, onClose }) => {
+ 
+  const handleClose = () => {
     onClose();
   };
   return (
     <Dialog onClose={handleClose} open={open}>
-      <DialogTitle>
-        Ingrese {title}
+      <DialogTitle
+        sx={{
+          textAlign: "center",
+          // fontSize: 15,
+          fontFamily: "fantasy",
+          fontWeight: 2,
+        }}
+      >
+         {title === "necesidad" ? (
+          "Reporta una necesidad ciudadana"
+        ) : "Ingresa una Propuesta Política"}
       </DialogTitle>
       <DialogContent>
-        <TextField fullWidth label={title} variant="outlined" />        
-        <TextField sx={{py: 1}} fullWidth label={"aqui va la imagen"} variant="outlined" />        
-        <TextField sx={{py: 1}} fullWidth label={"aqui va El lugar"} variant="outlined" />        
-        <TextField sx={{py: 1}} fullWidth label={"aqui va El estado"} variant="outlined" />
-        
+        {title === "necesidad" ? (
+          <NeedForm onclose={handleClose} />
+        ) : <PublicarPropuesta/>}
       </DialogContent>
-      <DialogActions>
-          <Button sx={{mt: 2}} variant="contained" color="primary">
+      {/*   <DialogActions>
+        <Button sx={{ mt: 2 }} variant="contained" color="primary">
           Guardar
         </Button>
-      </DialogActions>
+      </DialogActions> */}
     </Dialog>
   );
 };

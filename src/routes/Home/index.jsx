@@ -84,7 +84,7 @@ const Home = () => {
           )}
 
           <Box sx={{ p: 2 }}>
-            <MapMark position={position} zoom={13} />
+            <MapMark position={position} zoom={15} />
           </Box>
         </Grid>
       </Grid>

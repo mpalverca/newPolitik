@@ -3,6 +3,8 @@ import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./Home/index";
 import ProtectedRoute from "./ProtectedRoute";
 import NavBar from "../components/navbar/navBar";
+import PostEvent from "./postEvent";
+import BuscarCandidatos from "./Home/biografies";
 // CAMBIO: El componente debe empezar con mayúscula
 export default function AppRouter() {
   const [user, setUser] = useState(null);
@@ -27,7 +29,10 @@ export default function AppRouter() {
             </ProtectedRoute>
           }
         />
-        <Route path="/inicio" element={<Home />} />
+        <Route path="/inicio" element={<Home />} />        
+        <Route path="/Event/:eventId" element={<PostEvent />} />
+        
+        <Route path="/biografias" element={<BuscarCandidatos />} />
       </Routes>
     </Router>
   );

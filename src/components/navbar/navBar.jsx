@@ -20,7 +20,7 @@ import logo1 from "../../assets/New_logo.jpg";
 
 const pages = [
   { name: "inicio", path: "" },
-  { name: "Biografias", path: "/analisis" },
+  { name: "Biografias", path: "/biografias" },
   //{ name: "Información", path: "/info" },
 ];
 

@@ -23,6 +23,7 @@ import {
   ContentCopy as ContentCopyIcon,
 } from "@mui/icons-material";
 import { DialogCenter } from "../../components/dialogs/dialog";
+import EventosPublicos from "../../Pages/homeMap/events";
 
 export default function MapMark({ position, zoom, renderPolygons, ...props }) {
   const [menuAnchor, setMenuAnchor] = useState(null);
@@ -81,7 +82,7 @@ export default function MapMark({ position, zoom, renderPolygons, ...props }) {
       <MapContainer
         center={position}
         zoom={zoom}
-        style={{ height: "80vh", width: "100%" }}
+        style={{ height: "85vh", width: "100%" }}
         scrollWheelZoom={true}
       >
         <TileLayer
@@ -105,6 +106,7 @@ export default function MapMark({ position, zoom, renderPolygons, ...props }) {
 
         {/* Otras capas */}
         {props.children}
+        <EventosPublicos />
       </MapContainer>
       <Popover
         open={Boolean(menuAnchor)}

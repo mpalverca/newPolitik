@@ -178,7 +178,7 @@ export default function ResponsiveNavBar() {
               variant="h5"
               noWrap
               component="a"
-              href="/riesgosapp"
+             // href="/riesgosapp"
               sx={{
                 mr: 1,
                 fontFamily: "monospace",
@@ -288,7 +288,7 @@ export default function ResponsiveNavBar() {
             ) : (
               <Button
                 // variant="contained"
-                onClick={handleLogin}
+                onClick={()=>{navegate("/login")}}
                 sx={{
                   backgroundColor: "white",
                   color: "#0a0a0a",

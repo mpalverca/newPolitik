@@ -10,7 +10,7 @@ const Home = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   return (
-    <Box sx={{ height: "100vh", overflow: "hidden" }}>
+    <Box sx={{  overflow: "hidden" }}>
       <Grid container spacing={0} sx={{ height: "100%", flexWrap: "nowrap" }}>
         {/* Barra lateral izquierda */}
         <Grid

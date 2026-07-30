@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
-import NeedForm from "../../Pages/homeMap/need";
-import PublicarPropuesta from "../../Pages/homeMap/propuesta";
+import NeedForm from "../../pages/homeMap/need";
+import PublicarPropuesta from "../../pages/homeMap/propuesta";
+import EventosPublicos from "../../pages/homeMap/events";
 
 export const DialogCenter = ({ title, open, onClose }) => {
  
@@ -20,12 +21,12 @@ export const DialogCenter = ({ title, open, onClose }) => {
       >
          {title === "necesidad" ? (
           "Reporta una necesidad ciudadana"
-        ) : "Ingresa una Propuesta Política"}
+        ) : title === "propuesta" ? "Ingresa una Propuesta Política" : "Reporta un Evento"}
       </DialogTitle>
       <DialogContent>
         {title === "necesidad" ? (
           <NeedForm onclose={handleClose} />
-        ) : <PublicarPropuesta/>}
+        ) : title === "propuesta" ? <PublicarPropuesta/> : <EventosPublicos/>}
       </DialogContent>
       {/*   <DialogActions>
         <Button sx={{ mt: 2 }} variant="contained" color="primary">

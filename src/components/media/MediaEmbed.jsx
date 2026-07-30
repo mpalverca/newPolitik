@@ -157,7 +157,7 @@ const MediaEmbed = ({ url }) => {
   return (
     <Box sx={{ mt: 2 }}>
       <Typography variant="subtitle2" color="primary" gutterBottom>
-        Evidencia multimedia:
+     
       </Typography>
       {renderMedia()}
     </Box>

@@ -4,7 +4,8 @@ import Home from "./Home/index";
 import ProtectedRoute from "./ProtectedRoute";
 import NavBar from "../components/navbar/navBar";
 import PostEvent from "./postEvent";
-import BuscarCandidatos from "./Home/biografies";
+import BuscarCandidatos from "./biografies";
+import LoginPage from "./login/login_fb";
 // CAMBIO: El componente debe empezar con mayúscula
 export default function AppRouter() {
   const [user, setUser] = useState(null);
@@ -33,6 +34,7 @@ export default function AppRouter() {
         <Route path="/Event/:eventId" element={<PostEvent />} />
         
         <Route path="/biografias" element={<BuscarCandidatos />} />
+        <Route path="/login" element={<LoginPage/>} />
       </Routes>
     </Router>
   );

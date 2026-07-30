@@ -23,7 +23,7 @@ import {
   ContentCopy as ContentCopyIcon,
 } from "@mui/icons-material";
 import { DialogCenter } from "../../components/dialogs/dialog";
-import EventosPublicos from "../../Pages/homeMap/events";
+import EventosPublicos from "../../pages/homeMap/events";
 
 export default function MapMark({ position, zoom, renderPolygons, ...props }) {
   const [menuAnchor, setMenuAnchor] = useState(null);
@@ -41,6 +41,11 @@ export default function MapMark({ position, zoom, renderPolygons, ...props }) {
       key: "propsp",
       label: "Propuesta Política",
       accion: (coords) => handleClickOpen(coords, "propuesta"),
+    },
+     {
+      key: "event",
+      label: "Evento",
+      accion: (coords) => handleClickOpen(coords, "evento"),
     },
   ];
   const handleClickOpen = (coords, type) => {

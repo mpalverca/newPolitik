@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/newPolitik/static/css/main.323d7611.css",
-    "main.js": "/newPolitik/static/js/main.1dc8988d.js",
+    "main.js": "/newPolitik/static/js/main.e0458893.js",
     "static/js/453.d7266196.chunk.js": "/newPolitik/static/js/453.d7266196.chunk.js",
     "index.html": "/newPolitik/index.html",
     "main.323d7611.css.map": "/newPolitik/static/css/main.323d7611.css.map",
-    "main.1dc8988d.js.map": "/newPolitik/static/js/main.1dc8988d.js.map",
+    "main.e0458893.js.map": "/newPolitik/static/js/main.e0458893.js.map",
     "453.d7266196.chunk.js.map": "/newPolitik/static/js/453.d7266196.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.323d7611.css",
-    "static/js/main.1dc8988d.js"
+    "static/js/main.e0458893.js"
   ]
 }

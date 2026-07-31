@@ -21,7 +21,7 @@ import {
 } from "@mui/icons-material";
 
 const PostCard = ({ post }) => {
-  const { text, imageUrl, lat, lng, link, character, author, createdAt } = post;
+  const { text, imageUrl, lat, lng, link, character, author, createdAt,user } = post;
 
   const formattedDate = createdAt
     ? new Date(createdAt).toLocaleDateString("es-ES", {
@@ -34,15 +34,17 @@ const PostCard = ({ post }) => {
     : "";
 
   return (
-    <Card sx={{ mb: 2, borderRadius: 2, boxShadow: "0 1px 3px rgba(0,0,0,0.12)" }}>
+    <Card variant="outlined" sx={{ mb: 2, borderRadius: 2, boxShadow: "0 1px 3px rgba(0,0,0,0.12)" }}>
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: "#1877f2" }}>
             {author ? author.charAt(0).toUpperCase() : "U"}
           </Avatar>
         }
-        title={author || "Usuario anónimo"}
-        subheader={formattedDate}
+       /*  title={author || "Usuario anónimo"}*/
+        subheader={formattedDate} 
+        title={user|| "Usuario anónimo"}
+  
       />
       <CardContent>
         <Typography variant="body1" sx={{ whiteSpace: "pre-wrap", mb: 1 }}>

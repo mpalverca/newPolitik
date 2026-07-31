@@ -83,6 +83,7 @@ const PostModal = ({ open, onClose, initialPosition, onPostCreated }) => {
         author: user?.displayName || user?.email || "Anónimo",
         userId: user?.uid,
       });
+      
       onPostCreated();
       onClose();
       resetForm();

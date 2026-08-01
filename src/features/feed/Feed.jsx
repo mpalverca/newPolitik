@@ -33,7 +33,7 @@ const Feed = () => {
   }
 
   return (
-    <Box sx={{ maxWidth: 700, mx: "auto", p: 1 }}>
+    <Box sx={{ maxWidth: 700, mx: "auto", maxheight:200, p: 1, display: "overFlow", gap: 2 }}>
       {posts.map((post) => (
         <PostCard key={post.id} post={post} />
       ))}

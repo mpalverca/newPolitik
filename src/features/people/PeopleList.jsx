@@ -40,6 +40,7 @@ const PeopleList = () => {
     setLoading(true);
     try {
       const results = await searchPeople(searchTerm);
+      console.log("Resultados de búsqueda:", results)
       setPeople(results);
     } catch (err) {
       setError(err.message);

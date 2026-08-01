@@ -19,6 +19,7 @@ import { useAuth } from "../../context/AuthContext";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import PersonAutocomplete from "../people/PersonAutoComplete";
 
 // Solución para íconos de Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
@@ -51,6 +52,7 @@ const PostModal = ({ open, onClose, initialPosition, onPostCreated }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [mapCenter, setMapCenter] = useState([40.4168, -3.7038]); // Madrid por defecto
+   const [selectedPerson, setSelectedPerson] = useState(null); // { id, name, avatar }
 
   // Actualizar centro del mapa cuando se recibe una posición inicial
   useEffect(() => {
@@ -82,6 +84,7 @@ const PostModal = ({ open, onClose, initialPosition, onPostCreated }) => {
         character: character.trim() || null,
         author: user?.displayName || user?.email || "Anónimo",
         userId: user?.uid,
+        person: selectedPerson ? { id: selectedPerson.id, name: selectedPerson.name, avatar: selectedPerson.avatar|| null } : null
       });
       
       onPostCreated();
@@ -199,39 +202,6 @@ const PostModal = ({ open, onClose, initialPosition, onPostCreated }) => {
               </MapContainer>
             </Box>
 
-            {/* <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
-              <TextField
-                label="Latitud"
-                value={lat}
-                onChange={(e) => setLat(e.target.value)}
-                type="number"
-                required
-                fullWidth
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <LocationOn />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <TextField
-                label="Longitud"
-                value={lng}
-                onChange={(e) => setLng(e.target.value)}
-                type="number"
-                required
-                fullWidth
-              />
-              <Button
-                variant="outlined"
-                onClick={handleUseCurrentLocation}
-                startIcon={<MyLocation />}
-                sx={{ whiteSpace: "nowrap" }}
-              >
-                Mi ubicación
-              </Button>
-            </Box> */}
 
             <TextField
               label="Enlace (opcional)"
@@ -248,22 +218,23 @@ const PostModal = ({ open, onClose, initialPosition, onPostCreated }) => {
               }}
             />
 
-            <TextField
-              label="Personaje (opcional)"
-              value={character}
-              onChange={(e) => setCharacter(e.target.value)}
-              fullWidth
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Person />
-                  </InputAdornment>
-                ),
-              }}
-            />
+            <PersonAutocomplete
+            value={selectedPerson}
+            onChange={(person) => setSelectedPerson(person)}
+            label="Personaje"
+          />
 
-            {error && <Alert severity="error">{error}</Alert>}
-
+          {selectedPerson && (
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              {/* <Avatar src={selectedPerson.avatar} sx={{ width: 24, height: 24 }}>
+                {selectedPerson.name?.charAt(0).toUpperCase()}
+              </Avatar> */}
+              <Typography variant="body2">
+                Personaje seleccionado: <strong>{selectedPerson.name}</strong>
+              </Typography>
+            </Box>
+          )}
+          {error && <Alert severity="error">{error}</Alert>}
             <Button
               type="submit"
               variant="contained"

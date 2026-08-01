@@ -41,7 +41,24 @@ const MapView = () => {
   const handlePostCreated = () => {
     // El feed se actualiza automáticamente gracias a la suscripción
   };
-
+const createCustomIcon = (avatarUrl, name) => {
+  // Si hay avatar, creamos un div con la imagen
+  const html = avatarUrl 
+    ? `<div style="width: 40px; height: 40px; border-radius: 50%; overflow: hidden; border: 2px solid white; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+         <img src="${avatarUrl}" style="width: 100%; height: 100%; object-fit: cover;" />
+       </div>`
+    : `<div style="width: 40px; height: 40px; border-radius: 50%; background-color: #1877f2; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+         ${name ? name.charAt(0).toUpperCase() : "U"}
+       </div>`;
+  
+  return L.divIcon({
+    html,
+    className: "custom-marker",
+    iconSize: [40, 40],
+    iconAnchor: [20, 20],
+    popupAnchor: [0, -20],
+  });
+};
   return (
     <Box sx={{ position: "relative", height: "100%", width: "100%" }}>
       <MapContainer
@@ -53,14 +70,15 @@ const MapView = () => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         />
-        {posts.map((post) => (
-          <Marker key={post.id} position={[post.lat, post.lng]}>
+        {posts.map((post) => 
+          {const icon = createCustomIcon(post.person?.avatar || post.selectedPerson?.avatar, post.character || post.author);
+          return <Marker key={post.id} position={[post.lat, post.lng]} icon={icon}>
             <Popup>
               <strong>{post.text?.substring(0, 50)}...</strong>
               <p>{post.author}</p>
             </Popup>
-          </Marker>
-        ))}
+          </Marker>}
+        )}
         <MapClickHandler />
       </MapContainer>
 

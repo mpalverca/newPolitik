@@ -19,9 +19,10 @@ import {
   LocationOn,
   Link as LinkIcon,
 } from "@mui/icons-material";
+import MediaEmbed from "../../components/media/MediaEmbed";
 
 const PostCard = ({ post }) => {
-  const { text, imageUrl, lat, lng, link, character, author, createdAt,user } = post;
+  const { text, imageUrl, lat, lng, link, character, author, createdAt,user,person,selectedPerson } = post;
 
   const formattedDate = createdAt
     ? new Date(createdAt).toLocaleDateString("es-ES", {
@@ -34,16 +35,17 @@ const PostCard = ({ post }) => {
     : "";
 
   return (
-    <Card variant="outlined" sx={{ mb: 2, borderRadius: 2, boxShadow: "0 1px 3px rgba(0,0,0,0.12)" }}>
+    <Card variant="outlined" sx={{ mb: 2, borderRadius: 2, boxShadow: "0 1px 3px rgba(0,0,0,0.12)" }} >
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: "#1877f2" }}>
-            {author ? author.charAt(0).toUpperCase() : "U"}
+          <Avatar sx={{ bgcolor: "#1877f2" }}   src={person?.avatar || selectedPerson?.avatar || undefined} >
+        {/*     {author ? author.charAt(0).toUpperCase() : "U"} */}
+        {person?.avatar|| selectedPerson?.avatar || "U"}
           </Avatar>
         }
        /*  title={author || "Usuario anónimo"}*/
         subheader={formattedDate} 
-        title={user|| "Usuario anónimo"}
+        title={person?.name|| selectedPerson?.name || "Usuario anónimo"}
   
       />
       <CardContent>
@@ -78,7 +80,7 @@ const PostCard = ({ post }) => {
           {character && (
             <Chip label={`Personaje: ${character}`} size="small" variant="outlined" />
           )}
-          {link && (
+         {/*  {link && (
             <Chip
               icon={<LinkIcon fontSize="small" />}
               label="Enlace"
@@ -88,8 +90,10 @@ const PostCard = ({ post }) => {
               target="_blank"
               clickable
             />
-          )}
+          )} */}
+         
         </Box>
+          {link && <MediaEmbed url={link} />}
       </CardContent>
       <Divider />
       <CardActions sx={{ justifyContent: "space-around" }}>

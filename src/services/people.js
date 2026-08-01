@@ -41,7 +41,9 @@ export const createPerson = async (personData) => {
 // ---------- Obtener todas las personas (una vez) ----------
 export const getPeople = async () => {
   const q = query(collection(db, PEOPLE_COLLECTION), orderBy("createdAt", "desc"));
+
   const snapshot = await getDocs(q);
+   
   return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };
 
@@ -49,6 +51,7 @@ export const getPeople = async () => {
 export const subscribeToPeople = (callback) => {
   const q = query(collection(db, PEOPLE_COLLECTION), orderBy("createdAt", "desc"));
   return onSnapshot(q, (snapshot) => {
+    console.log("📡", snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
     const people = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
     callback(people);
   });
@@ -80,13 +83,45 @@ export const deletePerson = async (personId) => {
 
 // ---------- Buscar personas por nombre ----------
 export const searchPeople = async (searchTerm) => {
-  const q = query(
-    collection(db, PEOPLE_COLLECTION),
-    where("name", ">=", searchTerm),
-    where("name", "<=", searchTerm + "\uf8ff")
-  );
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  try {
+    // Normalizar el término de búsqueda (minúsculas)
+    const searchLower = searchTerm.toLowerCase().trim();
+    
+    
+    if (searchLower.length === 0) {
+      // Si no hay término, devolver todas las personas (opcional)
+      const all = await getPeople();
+      return all;
+    }
+
+    // Usar un índice compuesto: orderBy("name") + where
+    const q = query(
+      collection(db, PEOPLE_COLLECTION),
+      orderBy("name"),
+    //  where("name", ">=", searchLower),
+    //  where("name", "<=", searchLower + "\uf8ff")
+    );
+
+    
+    const snapshot = await getDocs(q);
+        
+    const results = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+    console.log(`🔍 Búsqueda: "${searchLower}" → ${results.length} resultados`);
+    return results;
+  } catch (error) {
+    console.error("Error en searchPeople:", error);
+    // Si falla por índice, mostrar mensaje amigable
+    if (error.code === "failed-precondition") {
+      console.warn("⚠️ Se necesita crear un índice en Firestore. Sigue el enlace de la consola.");
+      // Fallback: búsqueda local (simulada) - solo si tienes pocos datos
+      const allPeople = await getPeople();
+      return allPeople.filter(p => 
+        p.name?.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+    throw error;
+  }
 };
 
 // ---------- Funciones específicas (cambiar avatar, portada, likes) ----------

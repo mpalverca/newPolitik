@@ -1,11 +1,5 @@
 // App.jsx
-import {
-  HashRouter as Router,
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -13,7 +7,6 @@ import Home from "./pages/Home";
 import NavBar from "./components/navbar/NavbarFb";
 import Persons from "./pages/persons/Persons";
 
-// Componente para rutas privadas
 const PrivateRoute = ({ children }) => {
   const { user } = useAuth();
   return user ? children : <Navigate to="/login" />;
@@ -21,21 +14,34 @@ const PrivateRoute = ({ children }) => {
 
 function App() {
   return (
-    <Router>
-  
+    <BrowserRouter>
       <AuthProvider>
-            <NavBar/>
+        <NavBar />
         <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          {/* Rutas públicas (no requieren autenticación) */}
           <Route path="/" element={<Home />} />
           <Route path="/inicio" element={<Home />} />
+          <Route path="/persons" element={<Persons />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          
+          {/* Ruta privada: perfil de usuario, panel de control, etc. */}
+          <Route
+            path="/perfil"
+            element={
+              <PrivateRoute>
+                <div>Perfil de usuario (requiere login)</div>
+              </PrivateRoute>
+            }
+          />
+          
+          {/* Ruta de detalle de persona (pública) */}
+          <Route path="/people/:id" element={<Persons />} />
+          
           <Route path="*" element={<Navigate to="/" />} />
-         <Route path= "/persons" element={<Persons/> }  />
-
         </Routes>
       </AuthProvider>
-    </Router>
+    </BrowserRouter>
   );
 }
 

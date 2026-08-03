@@ -26,3 +26,4 @@ export const logoutUser = () => {
 export const subscribeToAuthChanges = (callback) => {
   return onAuthStateChanged(auth, callback);
 };
+

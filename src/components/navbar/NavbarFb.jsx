@@ -1,3 +1,4 @@
+// components/navbar/NavbarFb.jsx
 import React, { useState } from "react";
 import {
   AppBar,
@@ -10,16 +11,15 @@ import {
   Avatar,
   Menu,
   MenuItem,
-  Badge,
   useTheme,
   useMediaQuery,
   Tooltip,
   Divider,
+  Button,
 } from "@mui/material";
 import {
   Search,
   Home as HomeIcon,
-  Map,
   Group,
   AddCircle,
   Person,
@@ -27,18 +27,21 @@ import {
   Settings,
   Dashboard,
   History,
+  Groups2,
 } from "@mui/icons-material";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { logoutUser } from "../../services/auth";
+import { getUserProfile } from "../../services/users";
 
 // Definición de páginas (con iconos)
 const pages = [
   { name: "Inicio", path: "/", icon: <HomeIcon /> },
-  { name: "personas", path: "/persons", icon: <Group /> },
+  { name: "Personas", path: "/persons", icon: <Group /> },  
+  { name: "Grupos", path: "/persons", icon: <Groups2 /> },
 ];
 
-// Opciones del menú de usuario
+// Opciones del menú de usuario (solo para autenticados)
 const userMenuOptions = [
   { name: "Perfil", path: "/perfil", icon: <Person /> },
   { name: "Configuración", path: "/configuracion", icon: <Settings /> },
@@ -46,8 +49,11 @@ const userMenuOptions = [
   { name: "Historial", path: "/historial", icon: <History /> },
 ];
 
+
+
+
 const NavBar = ({ onAddPostClick }) => {
-  const { user } = useAuth();
+  const { user,profile } = useAuth();
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -70,9 +76,7 @@ const NavBar = ({ onAddPostClick }) => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    // Aquí iría la lógica de búsqueda
     console.log("Buscando:", searchTerm);
-    // Podrías redirigir a una página de resultados
     navigate(`/buscar?q=${encodeURIComponent(searchTerm)}`);
   };
 
@@ -113,7 +117,7 @@ const NavBar = ({ onAddPostClick }) => {
           NewPolitik
         </Typography>
 
-        {/* Buscador (solo en escritorio) */}
+        {/* Buscador (solo en escritorio y siempre visible) */}
         {!isMobile && (
           <Box
             component="form"
@@ -139,7 +143,7 @@ const NavBar = ({ onAddPostClick }) => {
           </Box>
         )}
 
-        {/* Navegación central: íconos (escritorio) */}
+        {/* Navegación central: íconos (escritorio) - visible solo si hay usuario */}
         {!isMobile && (
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
             {pages.map((page) => (
@@ -166,92 +170,107 @@ const NavBar = ({ onAddPostClick }) => {
           </Box>
         )}
 
-        {/* Botón Agregar + Perfil */}
+        {/* Sección derecha: Agregar (si hay usuario) o Login (si no) */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          {/* Botón de agregar publicación */}
-          <Tooltip title="Crear publicación">
-            <IconButton
-              color="primary"
-              onClick={onAddPostClick}
-              sx={{
-                bgcolor: "#e7f3ff",
-                "&:hover": { bgcolor: "#d4e8ff" },
-              }}
-            >
-              <AddCircle />
-            </IconButton>
-          </Tooltip>
+          {user ? (
+            // Usuario autenticado: botón Agregar + Avatar
+            <>
+              <Tooltip title="Crear publicación">
+                <IconButton
+                  color="primary"
+                  onClick={onAddPostClick}
+                  sx={{
+                    bgcolor: "#e7f3ff",
+                    "&:hover": { bgcolor: "#d4e8ff" },
+                  }}
+                >
+                  <AddCircle />
+                </IconButton>
+              </Tooltip>
 
-          {/* Avatar y menú de usuario */}
-          <IconButton
-            onClick={handleProfileMenuOpen}
-            size="small"
-            sx={{ ml: 1 }}
-          >
-            <Avatar
-              sx={{
-                width: 32,
-                height: 32,
-                bgcolor: "#1877f2",
-                fontSize: "0.9rem",
-              }}
-            >
-              {user?.displayName?.charAt(0)?.toUpperCase() ||
-                user?.email?.charAt(0)?.toUpperCase() ||
-                "U"}
-            </Avatar>
-          </IconButton>
+              <IconButton onClick={handleProfileMenuOpen} size="small" sx={{ ml: 1 }}>
+                <Avatar
+                  sx={{
+                    width: 32,
+                    height: 32,
+                    bgcolor: "#1877f2",
+                    fontSize: "0.9rem",
+                  }}
+                >
+                  {user?.displayName?.charAt(0)?.toUpperCase() ||
+                    user?.email?.charAt(0)?.toUpperCase() ||
+                    "U"}
+                </Avatar>
+              </IconButton>
 
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleProfileMenuClose}
-            transformOrigin={{ horizontal: "right", vertical: "top" }}
-            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-            PaperProps={{
-              sx: {
-                mt: 1,
-                minWidth: 200,
-                borderRadius: 2,
-                boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-              },
-            }}
-          >
-            <MenuItem disabled sx={{ opacity: 1 }}>
-              <Box sx={{ display: "flex", flexDirection: "column" }}>
-                <Typography variant="subtitle2" fontWeight="bold">
-                  {user?.displayName || "Usuario"}
-                </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  {user?.email}
-                </Typography>
-              </Box>
-            </MenuItem>
-            <Divider />
-            {userMenuOptions.map((option) => (
-              <MenuItem
-                key={option.name}
-                onClick={() => {
-                  handleProfileMenuClose();
-                  navigate(option.path);
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleProfileMenuClose}
+                transformOrigin={{ horizontal: "right", vertical: "top" }}
+                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+                PaperProps={{
+                  sx: {
+                    mt: 1,
+                    minWidth: 200,
+                    borderRadius: 2,
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+                  },
                 }}
-                sx={{ gap: 1 }}
               >
-                {option.icon}
-                {option.name}
-              </MenuItem>
-            ))}
-            <Divider />
-            <MenuItem onClick={handleLogout} sx={{ gap: 1, color: "error.main" }}>
-              <Logout fontSize="small" />
-              Cerrar sesión
-            </MenuItem>
-          </Menu>
+                <MenuItem disabled sx={{ opacity: 1 }}>
+                  <Box sx={{ display: "flex", flexDirection: "column" }}>
+                    <Typography variant="subtitle2" fontWeight="bold">
+                      {profile?.username || "Usuario"}
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      {profile?.email}
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      {profile?.phone}
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      {profile?.phone}
+                    </Typography>
+                  </Box>
+                </MenuItem>
+                <Divider />
+                {userMenuOptions.map((option) => (
+                  <MenuItem
+                    key={option.name}
+                    onClick={() => {
+                      handleProfileMenuClose();
+                      navigate(option.path);
+                    }}
+                    sx={{ gap: 1 }}
+                  >
+                    {option.icon}
+                    {option.name}
+                  </MenuItem>
+                ))}
+                <Divider />
+                <MenuItem onClick={handleLogout} sx={{ gap: 1, color: "error.main" }}>
+                  <Logout fontSize="small" />
+                  Cerrar sesión
+                </MenuItem>
+              </Menu>
+            </>
+          ) : (
+            // Usuario no autenticado: botón de Login
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => navigate("/login")}
+              sx={{ borderRadius: 20, textTransform: "none" }}
+            >
+              Iniciar sesión
+            </Button>
+          )}
         </Box>
       </Toolbar>
 
-      {/* Navegación móvil (pestañas inferiores o barra inferior) */}
-      {isMobile && (
+      {/* Navegación móvil (solo si hay usuario) */}
+      {isMobile && user && (
         <Box
           sx={{
             display: "flex",
@@ -278,7 +297,6 @@ const NavBar = ({ onAddPostClick }) => {
               </IconButton>
             </Tooltip>
           ))}
-          {/* Botón Agregar en móvil (podría estar en barra inferior) */}
           <Tooltip title="Crear publicación">
             <IconButton color="primary" onClick={onAddPostClick}>
               <AddCircle />

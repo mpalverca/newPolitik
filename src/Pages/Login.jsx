@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { loginUser } from "../services/auth";
+import { getUserProfile } from "../services/users";
+import { useAuth } from "../context/AuthContext"; // 👈 Importa el contexto
 import {
   Container,
   Paper,
@@ -17,21 +19,38 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+ // Si tienes una función en el contexto
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await loginUser(email, password);
+      const userCredential = await loginUser(email, password);
+      const user = userCredential.user;
+      
+      // Obtener perfil del usuario desde Firestore
+      const profile = await getUserProfile(user.uid);
+ 
+      
       navigate("/");
     } catch (err) {
-      setError(err.message);
+      let message = err.message;
+      if (err.code === 'auth/user-not-found') {
+        message = "No existe una cuenta con este correo.";
+      } else if (err.code === 'auth/wrong-password') {
+        message = "Contraseña incorrecta.";
+      } else if (err.code === 'auth/invalid-email') {
+        message = "El formato del correo no es válido.";
+      } else {
+        message = err.message;
+      }
+      setError(message);
     }
   };
 
   return (
     <Container maxWidth="xs">
       <Paper elevation={3} sx={{ p: 4, mt: 8 }}>
-        <Typography variant="h5" component="h1" align="center" gutterBottom>
+        <Typography variant="h5" align="center" gutterBottom>
           Iniciar sesión
         </Typography>
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>

@@ -7,6 +7,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { subscribeToPosts } from "../../services/posts";
 import PostModal from "../posts/PostModal";
 import "leaflet/dist/leaflet.css";
+import { useAuth } from "../../context/AuthContext";
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -19,7 +20,7 @@ const MapView = () => {
   const [posts, setPosts] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedPosition, setSelectedPosition] = useState(null);
-
+  const {profile} = useAuth();
   useEffect(() => {
     const unsubscribe = subscribeToPosts((data) => {
       setPosts(data.filter((p) => p.lat && p.lng));
@@ -59,10 +60,12 @@ const createCustomIcon = (avatarUrl, name) => {
     popupAnchor: [0, -20],
   });
 };
+
   return (
     <Box sx={{ position: "relative", height: "100%", width: "100%" }}>
       <MapContainer
-        center={[40.4168, -3.7038]}
+
+        center={[profile.provincia?.lat || 4.4168, profile.provincia?.lng || -79.20837875]}
         zoom={13}
         style={{ height: "100%", width: "100%" }}
       >
